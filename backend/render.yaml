@@ -1,0 +1,54 @@
+# https://render.com/docs/render-manifest
+services:
+  - type: web
+    name: tekisho-backend
+    env: python
+    plan: free
+    region: oregon
+    repo: Dhivija-tekisho/AVATAR_UPDATED
+    branch: master
+    buildCommand: pip install -r backend/requirements.txt && pip install gunicorn uvicorn
+    startCommand: gunicorn -k uvicorn.workers.UvicornWorker server:app --bind 0.0.0.0:$PORT --workers 1 --chdir backend
+    autoDeploy: true
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+        value: ""
+      - key: SUPABASE_KEY
+        sync: false
+        value: ""
+      - key: LIVEKIT_URL
+        sync: false
+        value: ""
+      - key: LIVEKIT_API_KEY
+        sync: false
+        value: ""
+      - key: LIVEKIT_API_SECRET
+        sync: false
+        value: ""
+      - key: OPENAI_API_KEY
+        sync: false
+        value: ""
+      - key: TAVUS_API_KEY
+        sync: false
+        value: ""
+      - key: REPLICA_ID
+        sync: false
+        value: ""
+      - key: PERSONA_ID
+        sync: false
+        value: ""
+      - key: MONGO_URI
+        sync: false
+        value: ""
+      - key: MONGO_DB_NAME
+        sync: false
+        value: "tekisho_db"
+      - key: MONGO_COLLECTION
+        sync: false
+        value: "clients"
+    healthCheckPath: /health
+    root: /
+    envVarsOnPullRequest:
+      - key: EXAMPLE_PR_VAR
+        value: "true"
